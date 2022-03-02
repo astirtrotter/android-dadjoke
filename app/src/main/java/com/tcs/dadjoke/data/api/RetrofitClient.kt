@@ -1,5 +1,6 @@
 package com.tcs.dadjoke.data.api
 
+import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -10,8 +11,14 @@ import retrofit2.converter.gson.GsonConverterFactory
  * Created by astirtrotter on 3/2/22
  */
 object RetrofitClient {
+    private val baseUrl = HttpUrl.Builder()
+        .scheme("https")
+        .host("icanhazdadjoke.com")
+        .encodedPath("/")
+        .build()
+
     val apiService: ApiService = Retrofit.Builder()
-        .baseUrl(ApiService.BASE_URL)
+        .baseUrl(baseUrl)
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .client(getHttpClient())
