@@ -24,7 +24,7 @@ class MainViewModel: ViewModel() {
             .subscribeWith(object: DisposableSingleObserver<Joke>() {
                 override fun onSuccess(joke: Joke) {
                     jokes.add(joke)
-                    liveData.value = jokes
+                    liveData.postValue(jokes)
                 }
 
                 override fun onError(e: Throwable) {

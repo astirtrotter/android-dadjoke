@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.tcs.dadjoke.data.repository.JokeRepository
 import com.tcs.dadjoke.databinding.ActivityMainBinding
 import com.tcs.dadjoke.ui.main.adapter.JokesRecyclerViewAdapter
 import com.tcs.dadjoke.ui.main.viewmodel.MainViewModel
