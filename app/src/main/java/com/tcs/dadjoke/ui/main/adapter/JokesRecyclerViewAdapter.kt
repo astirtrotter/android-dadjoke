@@ -19,7 +19,7 @@ class JokesRecyclerViewAdapter(
     inner class JokeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(joke: Joke) {
             val binding = ItemJokeBinding.bind(itemView)
-            binding.txtValue.text = joke.value
+            binding.txtValue.text = joke.joke
         }
     }
 

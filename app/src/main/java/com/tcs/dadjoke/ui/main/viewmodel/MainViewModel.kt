@@ -3,6 +3,11 @@ package com.tcs.dadjoke.ui.main.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tcs.dadjoke.data.model.Joke
+import com.tcs.dadjoke.data.repository.JokeRepository
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.observers.DisposableSingleObserver
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 /**
  * Created by astirtrotter on 3/2/22
@@ -10,16 +15,27 @@ import com.tcs.dadjoke.data.model.Joke
 class MainViewModel: ViewModel() {
     val liveData = MutableLiveData<ArrayList<Joke>>()
     private val jokes = arrayListOf<Joke>()
+    private val compositeDisposable = CompositeDisposable()
 
-    fun add(joke: Joke) {
-        jokes.add(joke)
-        liveData.value = jokes
+    fun add() {
+        compositeDisposable.add(JokeRepository.getJoke()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeWith(object: DisposableSingleObserver<Joke>() {
+                override fun onSuccess(joke: Joke) {
+                    jokes.add(joke)
+                    liveData.value = jokes
+                }
+
+                override fun onError(e: Throwable) {
+                    e.printStackTrace()
+                }
+            })
+        )
     }
 
-    fun remove(joke: Joke) {
-        jokes.remove(joke)
-        liveData.value = jokes
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.dispose()
     }
-
-    fun size() = jokes.size
 }
